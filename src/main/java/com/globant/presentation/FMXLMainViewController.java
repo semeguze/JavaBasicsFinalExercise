@@ -1,19 +1,28 @@
 package com.globant.presentation;
 
 import com.globant.data.entities.*;
-import com.globant.data.entities.ClassUniversity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +37,7 @@ public class FMXLMainViewController implements Initializable {
     private Pane studentsPane;
     @FXML
     private Pane classesPane;
+
     @FXML
     private TableView<Teacher> teachersTable;
     @FXML
@@ -40,6 +50,18 @@ public class FMXLMainViewController implements Initializable {
     private TableColumn<Teacher, Integer> colHrsTeacher;
     @FXML
     private TableColumn<Teacher, String> colTypeTeacher;
+
+    @FXML
+    private TableView<Student> studentsTable;
+
+    @FXML
+    private TableView<ClassUniversity> classesTable;
+    @FXML
+    private TableColumn<ClassUniversity, String> colNameClass;
+    @FXML
+    private TableColumn<ClassUniversity, String> colNameClassroom;
+    @FXML
+    private TableColumn<ClassUniversity, String> colNameClassTeacher;
 
     private ObservableList<Teacher> listTeachers = FXCollections.observableArrayList();
     private ObservableList<Student> listStudents = FXCollections.observableArrayList();
@@ -73,14 +95,78 @@ public class FMXLMainViewController implements Initializable {
         classesPane.setVisible(true);
     }
 
+
+    private void addButtonToTable() {
+
+        TableColumn<ClassUniversity, Void> colBtn = new TableColumn<>("View");
+
+        Callback<TableColumn<ClassUniversity, Void>, TableCell<ClassUniversity, Void>> cellFactory = new Callback<TableColumn<ClassUniversity, Void>, TableCell<ClassUniversity, Void>>() {
+            @Override
+            public TableCell<ClassUniversity, Void> call(final TableColumn<ClassUniversity, Void> param) {
+                return new TableCell<ClassUniversity, Void>() {
+                    private final Button btn = new Button("Details");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            ClassUniversity data = getTableView().getItems().get(getIndex());
+                            try {
+                                showDetailsClasses(data);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        classesTable.getColumns().add(colBtn);
+
+    }
+
+    @FXML
+    public void showDetailsClasses(ClassUniversity theClass) throws Exception {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/classDetails.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        scene.setFill(Color.web("#000000",0.85));
+        FMXLDetailClassesViewController fmxlDetailClassesViewController = loader.getController();
+        fmxlDetailClassesViewController.setData(theClass);
+        Utils.enableMoveWindow(root, stage);
+        stage.show();
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeTeachersData();
         initializeStudentsData();
         University university = initializeClassesData();
+        addButtonToTable();
     }
 
     private University initializeClassesData() {
+
+        colNameClass.setCellValueFactory(cell -> cell.getValue().getName());
+        colNameClassroom.setCellValueFactory(cell -> cell.getValue().getClassroom());
+        colNameClassTeacher.setCellValueFactory(cell -> cell.getValue().getTeacher().getName());
 
         log.info("Creating basic classes");
         ObservableList<Student> studentClass1 = FXCollections.observableArrayList();
@@ -98,6 +184,9 @@ public class FMXLMainViewController implements Initializable {
         studentClass4.add(listStudents.get(1));
         studentClass4.add(listStudents.get(3));
         listClasses.add(new ClassUniversity("Operating Systems", "Picasso 1234 - 101", listTeachers.get(0), studentClass4));
+
+        classesTable.setItems(listClasses);
+
         return new University("Test University", listTeachers, listStudents, listClasses);
 
     }
