@@ -1,0 +1,11 @@
+com\globant\data\entities\Class.class
+com\globant\presentation\FMXLTeacherViewController.class
+com\globant\presentation\Main.class
+com\globant\presentation\FMXLMainViewController.class
+com\globant\presentation\Main$2.class
+com\globant\data\entities\TeacherPartTime.class
+com\globant\presentation\Main$1.class
+com\globant\data\entities\Student.class
+com\globant\data\entities\TeacherFullTime.class
+com\globant\data\entities\Teacher.class
+com\globant\data\entities\University.class

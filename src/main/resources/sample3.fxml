@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.globant.presentation.FMXLMainViewController">
+   <children>
+      <AnchorPane fx:id="mainAnchorPane" layoutX="81.0" prefHeight="592.0" prefWidth="819.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane prefHeight="600.0" prefWidth="819.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="83.0" layoutY="29.0" prefHeight="645.0" prefWidth="1018.0">
+                     <children>
+                        <Pane fx:id="teachersPane" prefHeight="673.0" prefWidth="1018.0">
+                           <children>
+                              <Label fx:id="labelTeachers" layoutX="58.0" layoutY="31.0" text="Teachers" textFill="WHITE">
+                                 <font>
+                                    <Font size="48.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="teachersTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
+                                <columns>
+                                  <TableColumn fx:id="colNameTeacher" prefWidth="197.0" text="Name" />
+                                  <TableColumn fx:id="colSalaryTeacher" minWidth="0.0" prefWidth="81.0" text="Salary" />
+                                    <TableColumn fx:id="colExpTeacher" prefWidth="125.0" text="Exp / yrs" />
+                                    <TableColumn fx:id="colHrsTeacher" prefWidth="107.0" text="Active Hrs" />
+                                    <TableColumn fx:id="colTypeTeacher" prefWidth="140.0" text="Type" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="studentsPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
+                           <children>
+                              <Label fx:id="labelTeachers1" layoutX="58.0" layoutY="31.0" text="Students" textFill="WHITE">
+                                 <font>
+                                    <Font size="48.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
+                           <children>
+                              <Label fx:id="labelTeachers11" layoutX="58.0" layoutY="31.0" text="Classes" textFill="WHITE">
+                                 <font>
+                                    <Font size="48.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+               </children></Pane>
+            <Pane prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #232323;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <JFXButton fx:id="closeButton" layoutX="13.0" layoutY="2.0" onAction="#handleCloseButtonAction" ripplerFill="#23232300" text="X" textAlignment="CENTER" textFill="WHITE" />
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="600.0" prefWidth="81.0" style="-fx-background-color: #2C2C31;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane prefHeight="75.0" prefWidth="81.0" style="-fx-background-color: #133759;">
+               <children>
+                  <ImageView fitHeight="54.0" fitWidth="65.0" layoutX="13.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icon_globant.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <VBox layoutY="100.0" prefHeight="200.0" prefWidth="81.0">
+               <children>
+                  <Separator prefWidth="200.0" visible="false" />
+                  <JFXButton fx:id="teachersButton" contentDisplay="GRAPHIC_ONLY" onAction="#handleTeachersButtonAction" opacity="0.8" prefHeight="65.0" prefWidth="65.0" ripplerFill="WHITE" style="-fx-border-radius: 0em;" stylesheets="@style.css" text="teachersButtonSideBar">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icon_teacher.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="8.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Separator prefWidth="200.0" visible="false" />
+                  <JFXButton fx:id="studentsButton" contentDisplay="GRAPHIC_ONLY" onAction="#handleStudentsButtonAction" opacity="0.8" prefHeight="65.0" prefWidth="65.0" ripplerFill="WHITE" style="-fx-border-radius: 0em;" stylesheets="@style.css" text="studentsButtonSideBar">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icon_student.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="8.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Separator prefWidth="200.0" visible="false">
+                     <VBox.margin>
+                        <Insets left="8.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <JFXButton fx:id="classesButton" contentDisplay="GRAPHIC_ONLY" onAction="#handleClassesButtonAction" opacity="0.8" prefHeight="65.0" prefWidth="65.0" ripplerFill="WHITE" style="-fx-border-radius: 0em;" stylesheets="@style.css" text="classesButtonSideBar">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icon_class.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Separator prefWidth="200.0" visible="false" />
+               </children>
+            </VBox>
+            <Pane layoutY="525.0" prefHeight="80.0" prefWidth="80.0" AnchorPane.bottomAnchor="0.0">
+               <children>
+                  <ImageView fitHeight="54.0" fitWidth="65.0" layoutX="13.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icon_sebas.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
