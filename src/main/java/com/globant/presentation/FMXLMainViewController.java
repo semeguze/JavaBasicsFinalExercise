@@ -1,9 +1,7 @@
 package com.globant.presentation;
 
-import com.globant.data.entities.Teacher;
-import com.globant.data.entities.TeacherFullTime;
-import com.globant.data.entities.TeacherPartTime;
-import com.jfoenix.controls.JFXButton;
+import com.globant.data.entities.*;
+import com.globant.data.entities.ClassUniversity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +15,8 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -28,12 +28,6 @@ public class FMXLMainViewController implements Initializable {
     private Pane studentsPane;
     @FXML
     private Pane classesPane;
-    @FXML
-    private JFXButton teachersButton;
-    @FXML
-    private JFXButton studentsButton;
-    @FXML
-    private JFXButton classesButton;
     @FXML
     private TableView<Teacher> teachersTable;
     @FXML
@@ -47,7 +41,9 @@ public class FMXLMainViewController implements Initializable {
     @FXML
     private TableColumn<Teacher, String> colTypeTeacher;
 
-    private ObservableList listTeachers = FXCollections.observableArrayList();
+    private ObservableList<Teacher> listTeachers = FXCollections.observableArrayList();
+    private ObservableList<Student> listStudents = FXCollections.observableArrayList();
+    private ObservableList<ClassUniversity> listClasses = FXCollections.observableArrayList();
 
     @FXML
     protected void handleCloseButtonAction(ActionEvent event) {
@@ -79,10 +75,47 @@ public class FMXLMainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeTeacherTable();
+        initializeTeachersData();
+        initializeStudentsData();
+        University university = initializeClassesData();
     }
 
-    private void initializeTeacherTable() {
+    private University initializeClassesData() {
+
+        log.info("Creating basic classes");
+        ObservableList<Student> studentClass1 = FXCollections.observableArrayList();
+        studentClass1.add(listStudents.get(0));
+        listClasses.add(new ClassUniversity("OOP", "Training room 1", listTeachers.get(2), studentClass1));
+        ObservableList<Student> studentClass2 = FXCollections.observableArrayList();
+        studentClass2.add(listStudents.get(0));
+        studentClass2.add(listStudents.get(2));
+        studentClass2.add(listStudents.get(3));
+        listClasses.add(new ClassUniversity("Math", "Building 2 - 202", listTeachers.get(3), studentClass2));
+        List<Student> studentClass3 = new ArrayList<>();
+        studentClass3.add(listStudents.get(5));
+        listClasses.add(new ClassUniversity("Music", "Complex #64", listTeachers.get(2), studentClass3));
+        List<Student> studentClass4 = new ArrayList<>();
+        studentClass4.add(listStudents.get(1));
+        studentClass4.add(listStudents.get(3));
+        listClasses.add(new ClassUniversity("Operating Systems", "Picasso 1234 - 101", listTeachers.get(0), studentClass4));
+        return new University("Test University", listTeachers, listStudents, listClasses);
+
+    }
+
+    private void initializeStudentsData() {
+
+        log.info("Creating basic students");
+
+        listStudents.add(new Student("0001", "Juan Perez", 18));
+        listStudents.add(new Student("0002", "Adriana Montoya", 19));
+        listStudents.add(new Student("0003", "Sandra Gonzales", 18));
+        listStudents.add(new Student("0004", "Jose Santos", 22));
+        listStudents.add(new Student("0005", "Cristina Jimenez", 21));
+        listStudents.add(new Student("0006", "Rosa Smith", 20));
+
+    }
+
+    private void initializeTeachersData() {
 
         colNameTeacher.setCellValueFactory(cell -> cell.getValue().getName());
         colSalaryTeacher.setCellValueFactory(cell -> cell.getValue().getSalary().asObject());

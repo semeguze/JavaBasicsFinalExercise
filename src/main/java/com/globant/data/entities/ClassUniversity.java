@@ -1,5 +1,6 @@
 package com.globant.data.entities;
 
+import javafx.beans.property.SimpleStringProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +12,18 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Class {
-    private String name;
-    private String classroom;
+public class ClassUniversity {
+    private SimpleStringProperty name;
+    private SimpleStringProperty classroom;
     private Teacher teacher;
     private List<Student> students;
+
+    public ClassUniversity(String name, String classroom, Teacher teacher, List<Student> students) {
+        this.name = new SimpleStringProperty(name);
+        this.classroom = new SimpleStringProperty(classroom);
+        this.teacher = teacher;
+        this.students = students;
+    }
 
     public void printDetails() {
         log.info(" -> Name : {}", getName());
