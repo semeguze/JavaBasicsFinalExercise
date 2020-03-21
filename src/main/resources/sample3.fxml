@@ -21,7 +21,7 @@
                <children>
                   <AnchorPane layoutX="83.0" layoutY="29.0" prefHeight="645.0" prefWidth="1018.0">
                      <children>
-                        <Pane fx:id="teachersPane" prefHeight="673.0" prefWidth="1018.0">
+                        <Pane fx:id="teachersPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
                            <children>
                               <Label fx:id="labelTeachers" layoutX="58.0" layoutY="31.0" text="Teachers" textFill="WHITE">
                                  <font>
@@ -39,13 +39,20 @@
                               </TableView>
                            </children>
                         </Pane>
-                        <Pane fx:id="studentsPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
+                        <Pane fx:id="studentsPane" prefHeight="673.0" prefWidth="1018.0">
                            <children>
                               <Label fx:id="labelTeachers1" layoutX="58.0" layoutY="31.0" text="Students" textFill="WHITE">
                                  <font>
                                     <Font size="48.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="studentsTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
+                                <columns>
+                                  <TableColumn fx:id="colIdStudent" prefWidth="150.0" text="Id" />
+                                  <TableColumn fx:id="colNameStudent" prefWidth="356.0" text="Name" />
+                                    <TableColumn fx:id="colAgeStudent" prefWidth="168.0" text="Age" />
+                                </columns>
+                              </TableView>
                            </children>
                         </Pane>
                         <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
@@ -55,6 +62,13 @@
                                     <Font size="48.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="classesTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
+                                <columns>
+                                  <TableColumn fx:id="colNameClass" prefWidth="162.0" text="Name" />
+                                  <TableColumn fx:id="colNameClassroom" prefWidth="178.0" text="Classroom" />
+                                    <TableColumn fx:id="colNameClassTeacher" prefWidth="176.0" text="Teacher" />
+                                </columns>
+                              </TableView>
                            </children>
                         </Pane>
                      </children>
@@ -62,7 +76,7 @@
                </children></Pane>
             <Pane prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #232323;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <JFXButton fx:id="closeButton" layoutX="13.0" layoutY="2.0" onAction="#handleCloseButtonAction" ripplerFill="#23232300" text="X" textAlignment="CENTER" textFill="WHITE" />
+                  <JFXButton fx:id="closeButton" layoutX="-1.0" layoutY="2.0" onAction="#handleCloseButtonAction" prefHeight="31.0" prefWidth="54.0" ripplerFill="#23232300" text="X" textAlignment="CENTER" textFill="WHITE" />
                </children>
             </Pane>
          </children>

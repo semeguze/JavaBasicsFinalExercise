@@ -13,5 +13,5 @@ public class University {
     private String name;
     private List<Teacher> teachers;
     private List<Student> students;
-    private List<Class> classes;
+    private List<ClassUniversity> classesUniversity;
 }
