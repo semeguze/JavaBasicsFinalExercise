@@ -53,6 +53,12 @@ public class FMXLMainViewController implements Initializable {
 
     @FXML
     private TableView<Student> studentsTable;
+    @FXML
+    private TableColumn<Student, String> colIdStudent;
+    @FXML
+    private TableColumn<Student, String> colNameStudent;
+    @FXML
+    private TableColumn<Student, Integer> colAgeStudent;
 
     @FXML
     private TableView<ClassUniversity> classesTable;
@@ -162,13 +168,52 @@ public class FMXLMainViewController implements Initializable {
         addButtonToTable();
     }
 
+    private void initializeTeachersData() {
+
+        log.info("Creating initial teachers");
+
+        colNameTeacher.setCellValueFactory(cell -> cell.getValue().getName());
+        colSalaryTeacher.setCellValueFactory(cell -> cell.getValue().getSalary().asObject());
+        colExpTeacher.setCellValueFactory(cell -> cell.getValue().getExperienceYears().asObject());
+        colHrsTeacher.setCellValueFactory(cell -> cell.getValue().getActiveHours().asObject());
+        colTypeTeacher.setCellValueFactory(cell -> cell.getValue().getType());
+
+        listTeachers.add(new TeacherFullTime("Alejandra Acevedo", 2));
+        listTeachers.add(new TeacherFullTime("Sebastian Mesa", 3));
+        listTeachers.add(new TeacherPartTime("Santiago Vallejo", 10));
+        listTeachers.add(new TeacherPartTime("Fernanda Arana", 12));
+
+        teachersTable.setItems(listTeachers);
+
+    }
+
+    private void initializeStudentsData() {
+
+        log.info("Creating initial students");
+
+        listStudents.add(new Student("0001", "Juan Perez", 18));
+        listStudents.add(new Student("0002", "Adriana Montoya", 19));
+        listStudents.add(new Student("0003", "Sandra Gonzales", 18));
+        listStudents.add(new Student("0004", "Jose Santos", 22));
+        listStudents.add(new Student("0005", "Cristina Jimenez", 21));
+        listStudents.add(new Student("0006", "Rosa Smith", 20));
+
+        colIdStudent.setCellValueFactory(cell -> cell.getValue().getId());
+        colNameStudent.setCellValueFactory(cell -> cell.getValue().getName());
+        colAgeStudent.setCellValueFactory(cell -> cell.getValue().getAge().asObject());
+
+        studentsTable.setItems(FXCollections.observableArrayList(listStudents));
+
+    }
+
     private University initializeClassesData() {
+
+        log.info("Creating initial classes");
 
         colNameClass.setCellValueFactory(cell -> cell.getValue().getName());
         colNameClassroom.setCellValueFactory(cell -> cell.getValue().getClassroom());
         colNameClassTeacher.setCellValueFactory(cell -> cell.getValue().getTeacher().getName());
 
-        log.info("Creating basic classes");
         ObservableList<Student> studentClass1 = FXCollections.observableArrayList();
         studentClass1.add(listStudents.get(0));
         listClasses.add(new ClassUniversity("OOP", "Training room 1", listTeachers.get(2), studentClass1));
@@ -188,38 +233,6 @@ public class FMXLMainViewController implements Initializable {
         classesTable.setItems(listClasses);
 
         return new University("Test University", listTeachers, listStudents, listClasses);
-
-    }
-
-    private void initializeStudentsData() {
-
-        log.info("Creating basic students");
-
-        listStudents.add(new Student("0001", "Juan Perez", 18));
-        listStudents.add(new Student("0002", "Adriana Montoya", 19));
-        listStudents.add(new Student("0003", "Sandra Gonzales", 18));
-        listStudents.add(new Student("0004", "Jose Santos", 22));
-        listStudents.add(new Student("0005", "Cristina Jimenez", 21));
-        listStudents.add(new Student("0006", "Rosa Smith", 20));
-
-    }
-
-    private void initializeTeachersData() {
-
-        colNameTeacher.setCellValueFactory(cell -> cell.getValue().getName());
-        colSalaryTeacher.setCellValueFactory(cell -> cell.getValue().getSalary().asObject());
-        colExpTeacher.setCellValueFactory(cell -> cell.getValue().getExperienceYears().asObject());
-        colHrsTeacher.setCellValueFactory(cell -> cell.getValue().getActiveHours().asObject());
-        colTypeTeacher.setCellValueFactory(cell -> cell.getValue().getType());
-
-        log.info("Creating basic teachers");
-
-        listTeachers.add(new TeacherFullTime("Alejandra Acevedo", 2));
-        listTeachers.add(new TeacherFullTime("Sebastian Mesa", 3));
-        listTeachers.add(new TeacherPartTime("Santiago Vallejo", 10));
-        listTeachers.add(new TeacherPartTime("Fernanda Arana", 12));
-
-        teachersTable.setItems(listTeachers);
 
     }
 

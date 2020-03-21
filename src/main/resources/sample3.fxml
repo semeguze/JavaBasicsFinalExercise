@@ -39,16 +39,23 @@
                               </TableView>
                            </children>
                         </Pane>
-                        <Pane fx:id="studentsPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
+                        <Pane fx:id="studentsPane" prefHeight="673.0" prefWidth="1018.0">
                            <children>
                               <Label fx:id="labelTeachers1" layoutX="58.0" layoutY="31.0" text="Students" textFill="WHITE">
                                  <font>
                                     <Font size="48.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="studentsTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
+                                <columns>
+                                  <TableColumn fx:id="colIdStudent" prefWidth="150.0" text="Id" />
+                                  <TableColumn fx:id="colNameStudent" prefWidth="356.0" text="Name" />
+                                    <TableColumn fx:id="colAgeStudent" prefWidth="168.0" text="Age" />
+                                </columns>
+                              </TableView>
                            </children>
                         </Pane>
-                        <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0">
+                        <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
                            <children>
                               <Label fx:id="labelTeachers11" layoutX="58.0" layoutY="31.0" text="Classes" textFill="WHITE">
                                  <font>
