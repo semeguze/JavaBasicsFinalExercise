@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -12,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.globant.presentation.FMXLMainViewController">
    <children>
@@ -21,7 +24,7 @@
                <children>
                   <AnchorPane layoutX="83.0" layoutY="29.0" prefHeight="645.0" prefWidth="1018.0">
                      <children>
-                        <Pane fx:id="teachersPane" prefHeight="673.0" prefWidth="1018.0">
+                        <Pane fx:id="teachersPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
                            <children>
                               <Label fx:id="labelTeachers" layoutX="58.0" layoutY="31.0" text="Teachers" textFill="WHITE">
                                  <font>
@@ -46,15 +49,62 @@
                                     <Font size="48.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="studentsTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
+                                <columns>
+                                  <TableColumn fx:id="colIdStudent" prefWidth="150.0" text="Id" />
+                                  <TableColumn fx:id="colNameStudent" prefWidth="356.0" text="Name" />
+                                    <TableColumn fx:id="colAgeStudent" prefWidth="168.0" text="Age" />
+                                </columns>
+                              </TableView>
+                              <JFXButton fx:id="addStudentButton" layoutX="811.0" layoutY="436.0" onAction="#addStudent" style="-fx-border-color: #06bd18; -fx-border-radius: 20;" text="Add Student" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <Pane layoutX="764.0" layoutY="249.0" prefHeight="175.0" prefWidth="219.0">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="175.0" prefWidth="219.0" spacing="15.0">
+                                       <children>
+                                          <JFXTextField fx:id="textFieldID" promptText="ID" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
+                                          <JFXTextField fx:id="textFieldName" promptText="NAME" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
+                                          <JFXComboBox fx:id="comboAge" prefHeight="31.0" prefWidth="238.0" promptText="AGE" stylesheets="@style.css" unFocusColor="WHITE" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
                            </children>
                         </Pane>
-                        <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
+                        <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0">
                            <children>
                               <Label fx:id="labelTeachers11" layoutX="58.0" layoutY="31.0" text="Classes" textFill="WHITE">
                                  <font>
                                     <Font size="48.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="classesTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
+                                <columns>
+                                  <TableColumn fx:id="colNameClass" prefWidth="162.0" text="Name" />
+                                  <TableColumn fx:id="colNameClassroom" prefWidth="178.0" text="Classroom" />
+                                    <TableColumn fx:id="colNameClassTeacher" prefWidth="176.0" text="Teacher" />
+                                </columns>
+                              </TableView>
+                              <Pane layoutX="762.0" layoutY="120.0" prefHeight="295.0" prefWidth="219.0">
+                                 <children>
+                                    <VBox layoutY="14.0" prefHeight="295.0" prefWidth="219.0" spacing="15.0">
+                                       <children>
+                                          <JFXTextField fx:id="textFieldNameClass" promptText="NAME" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
+                                          <JFXTextField fx:id="textFieldNameClassroom" promptText="CLASSROOM" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
+                                          <JFXComboBox fx:id="comboTeacher" prefHeight="31.0" prefWidth="238.0" promptText="TEACHER" stylesheets="@style.css" unFocusColor="WHITE" />
+                                          <CheckComboBox fx:id="checkComboClasses" prefHeight="31.0" prefWidth="255.0" style="-fx-background-color: #000;" stylesheets="@style.css" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <JFXButton fx:id="addClassButton" layoutX="820.0" layoutY="485.0" onAction="#addClass" style="-fx-border-color: #06bd18; -fx-border-radius: 20;" text="Add Class" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXButton>
                            </children>
                         </Pane>
                      </children>
@@ -62,7 +112,7 @@
                </children></Pane>
             <Pane prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #232323;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <JFXButton fx:id="closeButton" layoutX="13.0" layoutY="2.0" onAction="#handleCloseButtonAction" ripplerFill="#23232300" text="X" textAlignment="CENTER" textFill="WHITE" />
+                  <JFXButton fx:id="closeButton" layoutX="-1.0" layoutY="2.0" onAction="#handleCloseButtonAction" prefHeight="31.0" prefWidth="54.0" ripplerFill="#23232300" text="X" textAlignment="CENTER" textFill="WHITE" />
                </children>
             </Pane>
          </children>
