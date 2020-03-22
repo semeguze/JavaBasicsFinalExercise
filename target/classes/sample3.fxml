@@ -24,7 +24,7 @@
                <children>
                   <AnchorPane layoutX="83.0" layoutY="29.0" prefHeight="645.0" prefWidth="1018.0">
                      <children>
-                        <Pane fx:id="teachersPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
+                        <Pane fx:id="teachersPane" prefHeight="673.0" prefWidth="1018.0">
                            <children>
                               <Label fx:id="labelTeachers" layoutX="58.0" layoutY="31.0" text="Teachers" textFill="WHITE">
                                  <font>
@@ -35,11 +35,31 @@
                                 <columns>
                                   <TableColumn fx:id="colNameTeacher" prefWidth="197.0" text="Name" />
                                   <TableColumn fx:id="colSalaryTeacher" minWidth="0.0" prefWidth="81.0" text="Salary" />
-                                    <TableColumn fx:id="colExpTeacher" prefWidth="125.0" text="Exp / yrs" />
-                                    <TableColumn fx:id="colHrsTeacher" prefWidth="107.0" text="Active Hrs" />
+                                    <TableColumn fx:id="colExpTeacher" prefWidth="108.0" text="Exp / yrs" />
+                                    <TableColumn fx:id="colHrsTeacher" prefWidth="124.0" text="Hrs / Week" />
                                     <TableColumn fx:id="colTypeTeacher" prefWidth="140.0" text="Type" />
                                 </columns>
                               </TableView>
+                              <Label layoutX="790.0" layoutY="393.0" text="Part-Time Salary" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="labelPartTime" layoutX="829.0" layoutY="340.0" text="Salary" textFill="#3cd73e">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="793.0" layoutY="270.0" text="Full-Time Salary" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="labelFullTime" layoutX="829.0" layoutY="217.0" text="Salary" textFill="#3cd73e">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </Pane>
                         <Pane fx:id="studentsPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
@@ -52,8 +72,8 @@
                               <TableView fx:id="studentsTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
                                 <columns>
                                   <TableColumn fx:id="colIdStudent" prefWidth="150.0" text="Id" />
-                                  <TableColumn fx:id="colNameStudent" prefWidth="356.0" text="Name" />
-                                    <TableColumn fx:id="colAgeStudent" prefWidth="168.0" text="Age" />
+                                  <TableColumn fx:id="colNameStudent" prefWidth="227.0" text="Name" />
+                                    <TableColumn fx:id="colAgeStudent" prefWidth="76.0" text="Age" />
                                 </columns>
                               </TableView>
                               <JFXButton fx:id="addStudentButton" layoutX="811.0" layoutY="436.0" onAction="#addStudent" style="-fx-border-color: #06bd18; -fx-border-radius: 20;" text="Add Student" textFill="WHITE">
@@ -74,7 +94,7 @@
                               </Pane>
                            </children>
                         </Pane>
-                        <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0">
+                        <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0" visible="false">
                            <children>
                               <Label fx:id="labelTeachers11" layoutX="58.0" layoutY="31.0" text="Classes" textFill="WHITE">
                                  <font>

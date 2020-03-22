@@ -40,6 +40,11 @@ public class FMXLMainViewController implements Initializable {
     private Pane classesPane;
 
     @FXML
+    private Label labelPartTime;
+    @FXML
+    private Label labelFullTime;
+
+    @FXML
     private TableView<Teacher> teachersTable;
     @FXML
     private TableColumn<Teacher, String> colNameTeacher;
@@ -99,6 +104,7 @@ public class FMXLMainViewController implements Initializable {
 
     @FXML
     protected void handleTeachersButtonAction(ActionEvent event) {
+        teachersTable.setItems(listTeachers);
         teachersPane.setVisible(true);
         studentsPane.setVisible(false);
         classesPane.setVisible(false);
@@ -106,6 +112,7 @@ public class FMXLMainViewController implements Initializable {
 
     @FXML
     protected void handleStudentsButtonAction(ActionEvent event) {
+        studentsTable.setItems(listStudents);
         clearStudentsFields();
         teachersPane.setVisible(false);
         studentsPane.setVisible(true);
@@ -114,14 +121,14 @@ public class FMXLMainViewController implements Initializable {
 
     @FXML
     protected void handleClassesButtonAction(ActionEvent event) {
+        classesTable.setItems(listClasses);
         clearClassesFields();
         teachersPane.setVisible(false);
         studentsPane.setVisible(false);
         classesPane.setVisible(true);
     }
 
-
-    private void addButtonToTable() {
+    private void addButtonToTableClasses() {
 
         TableColumn<ClassUniversity, Void> colBtn = new TableColumn<>("View");
 
@@ -161,6 +168,75 @@ public class FMXLMainViewController implements Initializable {
 
     }
 
+    private void addButtonToTableStudents() {
+
+        TableColumn<Student, Void> colBtn = new TableColumn<>("View");
+
+        Callback<TableColumn<Student, Void>, TableCell<Student, Void>> cellFactory = new Callback<TableColumn<Student, Void>, TableCell<Student, Void>>() {
+            @Override
+            public TableCell<Student, Void> call(final TableColumn<Student, Void> param) {
+                return new TableCell<Student, Void>() {
+                    private final Button btn = new Button("Classes");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Student data = getTableView().getItems().get(getIndex());
+                            try {
+                                showMatchClasses(data);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        studentsTable.getColumns().add(colBtn);
+
+    }
+
+    @FXML
+    public void showMatchClasses(Student student) throws Exception {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/classesStudent.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        scene.setFill(Color.web("#000000", 0.85));
+        FMXLDetailClassesViewController fmxlDetailClassesViewController = loader.getController();
+        fmxlDetailClassesViewController.setDataClassesStudents(student, retrieveClassesRelatedToStudent(student));
+        utils.enableMoveWindow(root, stage);
+        stage.show();
+    }
+
+    public List<ClassUniversity> retrieveClassesRelatedToStudent(Student studentSelected) {
+
+        List<ClassUniversity> classes = new ArrayList<>();
+
+        for (ClassUniversity classUniversity : listClasses)
+            for (Student student : classUniversity.getStudents())
+                if (student.getId().getValue().equals(studentSelected.getId().getValue())) classes.add(classUniversity);
+
+
+        return classes;
+    }
+
     @FXML
     public void showDetailsClasses(ClassUniversity theClass) throws Exception {
 
@@ -182,7 +258,7 @@ public class FMXLMainViewController implements Initializable {
     @FXML
     protected void addStudent(ActionEvent event) {
 
-        if (checkFields()) {
+        if (checkFieldsStudentCreation()) {
             Student newStudent = new Student(
                     new SimpleStringProperty(textFieldID.getText()),
                     new SimpleStringProperty(textFieldName.getText()),
@@ -194,7 +270,7 @@ public class FMXLMainViewController implements Initializable {
 
     }
 
-    private boolean checkFields() {
+    private boolean checkFieldsStudentCreation() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, null, ButtonType.OK);
 
         if (textFieldID.getText() == null || textFieldID.getText().trim().isEmpty()) {
@@ -236,13 +312,13 @@ public class FMXLMainViewController implements Initializable {
             Teacher teacherNewClass = null;
             List<Student> studentsNewClass = new ArrayList<>();
 
-            for (Teacher teacher:listTeachers) {
-                if (teacher.getName().getValue().equals(comboTeacher.getValue())) teacherNewClass=teacher;
+            for (Teacher teacher : listTeachers) {
+                if (teacher.getName().getValue().equals(comboTeacher.getValue())) teacherNewClass = teacher;
             }
 
-            for (String selection:studentsSelectedToCreateClass) {
+            for (String selection : studentsSelectedToCreateClass) {
                 String[] parts = selection.split(" ->");
-                for (Student student:listStudents) {
+                for (Student student : listStudents) {
                     if (student.getId().getValue().equals(parts[0])) studentsNewClass.add(student);
                 }
             }
@@ -259,19 +335,20 @@ public class FMXLMainViewController implements Initializable {
         }
     }
 
-    private void clearStudentsFields(){
+    private void clearStudentsFields() {
         //clear fields
         textFieldID.setText(null);
         textFieldName.setText(null);
         comboAge.getSelectionModel().clearSelection();
     }
 
-    private void clearClassesFields(){
+    private void clearClassesFields() {
         //clear fields
         textFieldNameClass.setText(null);
         textFieldNameClassroom.setText(null);
         comboTeacher.getSelectionModel().clearSelection();
         checkComboClasses.getCheckModel().clearChecks();
+        initMultiCheckCombo();
     }
 
     private boolean checkFieldsClassCreation() {
@@ -316,12 +393,16 @@ public class FMXLMainViewController implements Initializable {
         initializeTeachersData();
         initializeStudentsData();
         initializeClassesData();
-        addButtonToTable();
+        addButtonToTableClasses();
+        addButtonToTableStudents();
         initCombo();
         initMultiCheckCombo();
+
     }
 
     private void initMultiCheckCombo() {
+
+        checkComboClasses.getItems().clear();
 
         // create the data to show in the CheckComboBox
         final ObservableMap<String, String> studentsToBeSelected = FXCollections.observableHashMap();
@@ -335,10 +416,9 @@ public class FMXLMainViewController implements Initializable {
         checkComboClasses.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
             studentsSelectedToCreateClass.clear();
             studentsSelectedToCreateClass.addAll(checkComboClasses.getCheckModel().getCheckedItems());
-            if (checkComboClasses.getCheckModel().getCheckedItems().isEmpty()){
+            if (checkComboClasses.getCheckModel().getCheckedItems().isEmpty()) {
                 studentsSelectedToCreateClass = FXCollections.observableArrayList();
             }
-            System.out.println(checkComboClasses.getCheckModel().getCheckedItems());
         });
 
 
@@ -359,6 +439,9 @@ public class FMXLMainViewController implements Initializable {
     private void initializeTeachersData() {
 
         log.info("Creating initial teachers");
+
+        labelFullTime.setText("$"+new MyProperties().getProperties().getProperty("baseSalary.fullTime.value"));
+        labelPartTime.setText("$"+new MyProperties().getProperties().getProperty("baseSalary.partTime.value"));
 
         colNameTeacher.setCellValueFactory(cell -> cell.getValue().getName());
         colSalaryTeacher.setCellValueFactory(cell -> cell.getValue().getSalary().asObject());

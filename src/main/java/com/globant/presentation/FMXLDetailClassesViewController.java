@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -26,6 +27,7 @@ public class FMXLDetailClassesViewController implements Initializable {
     private Label nameTeacher;
     @FXML
     private Label typeTeacher;
+
     @FXML
     private TableView<Student> tableStudentsClass;
     @FXML
@@ -34,6 +36,23 @@ public class FMXLDetailClassesViewController implements Initializable {
     private TableColumn<Student, String> colNameStudent;
     @FXML
     private TableColumn<Student, Integer> colAgeStudent;
+
+
+    @FXML
+    private Label nameStudent;
+    @FXML
+    private Label idStudent;
+    @FXML
+    private Label ageStudent;
+
+    @FXML
+    private TableView<ClassUniversity> classesTable;
+    @FXML
+    private TableColumn<ClassUniversity, String> colNameClass;
+    @FXML
+    private TableColumn<ClassUniversity, String> colNameClassroom;
+    @FXML
+    private TableColumn<ClassUniversity, String> colNameClassTeacher;
 
     private Utils utils = new Utils();
 
@@ -57,6 +76,23 @@ public class FMXLDetailClassesViewController implements Initializable {
         colAgeStudent.setCellValueFactory(cell -> cell.getValue().getAge().asObject());
 
         tableStudentsClass.setItems(FXCollections.observableArrayList(classSelected.getStudents()));
+
+    }
+
+    @FXML
+    public void setDataClassesStudents(final Student student, final List<ClassUniversity> classes) {
+
+       log.info("Filling data related to the classes related to : {} ", "-");
+
+        nameStudent.setText(student.getName().getValue());
+        idStudent.setText(student.getId().getValue());
+        ageStudent.setText(Integer.toString(student.getAge().getValue()) + " years old");
+
+        colNameClass.setCellValueFactory(cell -> cell.getValue().getName());
+        colNameClassroom.setCellValueFactory(cell -> cell.getValue().getClassroom());
+        colNameClassTeacher.setCellValueFactory(cell -> cell.getValue().getTeacher().getName());
+
+        classesTable.setItems(FXCollections.observableArrayList(classes));
 
     }
 
