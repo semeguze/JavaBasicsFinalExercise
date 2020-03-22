@@ -22,7 +22,7 @@ public abstract class Teacher {
         this.name = new SimpleStringProperty(name);
     }
 
-    public abstract SimpleDoubleProperty calculateSalary(int multiplier);
+    public abstract SimpleDoubleProperty calculateSalary(double baseSalary, int multiplier);
 
     public abstract void printDetails();
 
