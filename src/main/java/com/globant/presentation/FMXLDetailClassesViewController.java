@@ -1,9 +1,6 @@
 package com.globant.presentation;
 
-import com.globant.data.entities.ClassUniversity;
-import com.globant.data.entities.Student;
-import com.globant.data.entities.TeacherFullTime;
-import com.globant.data.entities.TeacherPartTime;
+import com.globant.data.entities.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,6 +35,8 @@ public class FMXLDetailClassesViewController implements Initializable {
     @FXML
     private TableColumn<Student, Integer> colAgeStudent;
 
+    private Utils utils = new Utils();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
@@ -64,8 +63,7 @@ public class FMXLDetailClassesViewController implements Initializable {
 
     @FXML
     protected void handleCloseButtonAction(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
+        utils.closeWindow(event);
     }
 
 }

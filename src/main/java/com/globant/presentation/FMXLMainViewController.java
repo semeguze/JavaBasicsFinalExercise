@@ -1,28 +1,29 @@
 package com.globant.presentation;
 
 import com.globant.data.entities.*;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
+import org.controlsfx.control.CheckComboBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,14 +70,31 @@ public class FMXLMainViewController implements Initializable {
     @FXML
     private TableColumn<ClassUniversity, String> colNameClassTeacher;
 
+    @FXML
+    private JFXTextField textFieldID;
+    @FXML
+    private JFXTextField textFieldName;
+    @FXML
+    private JFXTextField textFieldNameClass;
+    @FXML
+    private JFXTextField textFieldNameClassroom;
+
+    @FXML
+    private JFXComboBox<String> comboAge = new JFXComboBox<>();
+    @FXML
+    private JFXComboBox<String> comboTeacher = new JFXComboBox<>();
+    @FXML
+    private CheckComboBox<String> checkComboClasses;
+
+    private Utils utils = new Utils();
     private ObservableList<Teacher> listTeachers = FXCollections.observableArrayList();
     private ObservableList<Student> listStudents = FXCollections.observableArrayList();
     private ObservableList<ClassUniversity> listClasses = FXCollections.observableArrayList();
+    private ObservableList<String> studentsSelectedToCreateClass = FXCollections.observableArrayList();
 
     @FXML
     protected void handleCloseButtonAction(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
+        utils.closeWindow(event);
     }
 
     @FXML
@@ -88,14 +106,15 @@ public class FMXLMainViewController implements Initializable {
 
     @FXML
     protected void handleStudentsButtonAction(ActionEvent event) {
+        clearStudentsFields();
         teachersPane.setVisible(false);
         studentsPane.setVisible(true);
         classesPane.setVisible(false);
     }
 
-
     @FXML
     protected void handleClassesButtonAction(ActionEvent event) {
+        clearClassesFields();
         teachersPane.setVisible(false);
         studentsPane.setVisible(false);
         classesPane.setVisible(true);
@@ -152,20 +171,189 @@ public class FMXLMainViewController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
-        scene.setFill(Color.web("#000000",0.85));
+        scene.setFill(Color.web("#000000", 0.85));
         FMXLDetailClassesViewController fmxlDetailClassesViewController = loader.getController();
         fmxlDetailClassesViewController.setData(theClass);
-        Utils.enableMoveWindow(root, stage);
+        utils.enableMoveWindow(root, stage);
         stage.show();
 
     }
 
+    @FXML
+    protected void addStudent(ActionEvent event) {
+
+        if (checkFields()) {
+            Student newStudent = new Student(
+                    new SimpleStringProperty(textFieldID.getText()),
+                    new SimpleStringProperty(textFieldName.getText()),
+                    new SimpleIntegerProperty(Integer.parseInt(comboAge.getValue())));
+            listStudents.add(newStudent);
+            studentsTable.setItems(listStudents);
+            clearStudentsFields();
+        }
+
+    }
+
+    private boolean checkFields() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, null, ButtonType.OK);
+
+        if (textFieldID.getText() == null || textFieldID.getText().trim().isEmpty()) {
+            log.warn("ID EMPTY");
+            alert.setContentText("The ID field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (textFieldName.getText() == null || textFieldName.getText().trim().isEmpty()) {
+            log.warn("NAME EMPTY");
+            alert.setContentText("The name field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (comboAge.getValue() == null || comboAge.getValue().trim().isEmpty()) {
+            log.warn("AGE EMPTY");
+            alert.setContentText("The age field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (listStudents.stream().anyMatch(o -> o.getId().getValue().equals(textFieldID.getText()))) {
+            log.warn("ID ALREADY EXISTS");
+            alert.setContentText("Some student already have the ID : " + textFieldID.getText());
+            alert.showAndWait();
+            return false;
+        }
+
+        return true;
+    }
+
+    @FXML
+    protected void addClass(ActionEvent event) {
+
+        if (checkFieldsClassCreation()) {
+
+            Teacher teacherNewClass = null;
+            List<Student> studentsNewClass = new ArrayList<>();
+
+            for (Teacher teacher:listTeachers) {
+                if (teacher.getName().getValue().equals(comboTeacher.getValue())) teacherNewClass=teacher;
+            }
+
+            for (String selection:studentsSelectedToCreateClass) {
+                String[] parts = selection.split(" ->");
+                for (Student student:listStudents) {
+                    if (student.getId().getValue().equals(parts[0])) studentsNewClass.add(student);
+                }
+            }
+
+            ClassUniversity newClassUniversity = new ClassUniversity(
+                    new SimpleStringProperty(textFieldNameClass.getText()),
+                    new SimpleStringProperty(textFieldNameClassroom.getText()),
+                    teacherNewClass, studentsNewClass
+            );
+            listClasses.add(newClassUniversity);
+            classesTable.setItems(listClasses);
+            studentsSelectedToCreateClass.clear();
+            clearClassesFields();
+        }
+    }
+
+    private void clearStudentsFields(){
+        //clear fields
+        textFieldID.setText(null);
+        textFieldName.setText(null);
+        comboAge.getSelectionModel().clearSelection();
+    }
+
+    private void clearClassesFields(){
+        //clear fields
+        textFieldNameClass.setText(null);
+        textFieldNameClassroom.setText(null);
+        comboTeacher.getSelectionModel().clearSelection();
+        checkComboClasses.getCheckModel().clearChecks();
+    }
+
+    private boolean checkFieldsClassCreation() {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, null, ButtonType.OK);
+
+        if (textFieldNameClass.getText() == null || textFieldNameClass.getText().trim().isEmpty()) {
+            log.warn("NAME CLASS EMPTY");
+            alert.setContentText("The 'name class' field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (textFieldNameClassroom.getText() == null || textFieldNameClassroom.getText().trim().isEmpty()) {
+            log.warn("NAME CLASSROOM EMPTY");
+            alert.setContentText("The 'name classroom' field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (comboTeacher.getValue() == null || comboTeacher.getValue().trim().isEmpty()) {
+            log.warn("TEACHER EMPTY");
+            alert.setContentText("The 'teacher' field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (studentsSelectedToCreateClass == null || studentsSelectedToCreateClass.isEmpty()) {
+            log.warn("STUDENTS EMPTY");
+            alert.setContentText("Select at least one student");
+            alert.showAndWait();
+            return false;
+        }
+
+        return true;
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         initializeTeachersData();
         initializeStudentsData();
-        University university = initializeClassesData();
+        initializeClassesData();
         addButtonToTable();
+        initCombo();
+        initMultiCheckCombo();
+    }
+
+    private void initMultiCheckCombo() {
+
+        // create the data to show in the CheckComboBox
+        final ObservableMap<String, String> studentsToBeSelected = FXCollections.observableHashMap();
+        for (Student listStudent : listStudents) {
+            String code = listStudent.getId().getValue();
+            String name = listStudent.getName().getValue();
+            studentsToBeSelected.put(code, code + " -> " + name);
+        }
+
+        checkComboClasses.getItems().addAll(studentsToBeSelected.values());
+        checkComboClasses.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
+            studentsSelectedToCreateClass.clear();
+            studentsSelectedToCreateClass.addAll(checkComboClasses.getCheckModel().getCheckedItems());
+            if (checkComboClasses.getCheckModel().getCheckedItems().isEmpty()){
+                studentsSelectedToCreateClass = FXCollections.observableArrayList();
+            }
+            System.out.println(checkComboClasses.getCheckModel().getCheckedItems());
+        });
+
+
+    }
+
+    private void initCombo() {
+
+        List<String> ageList = new ArrayList<>();
+        List<String> nameTeacher = new ArrayList<>();
+
+        for (int i = 1; i <= 90; i++) ageList.add(Integer.toString(i));
+        comboAge.setItems(FXCollections.observableArrayList(ageList));
+        for (Teacher listTeacher : listTeachers) nameTeacher.add(listTeacher.getName().getValue());
+        comboTeacher.setItems(FXCollections.observableArrayList(nameTeacher));
+
     }
 
     private void initializeTeachersData() {
