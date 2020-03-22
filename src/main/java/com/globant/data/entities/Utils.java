@@ -7,8 +7,8 @@ import javafx.stage.Stage;
 
 public class Utils {
 
-    private static double xOffset = 0;
-    private static double yOffset = 0;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     public void enableMoveWindow(Parent root, Stage stage){
         root.setOnMousePressed(event -> {
