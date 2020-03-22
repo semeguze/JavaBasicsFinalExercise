@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -53,6 +55,22 @@
                                     <TableColumn fx:id="colAgeStudent" prefWidth="168.0" text="Age" />
                                 </columns>
                               </TableView>
+                              <JFXButton fx:id="addStudentButton" layoutX="811.0" layoutY="436.0" onAction="#addStudent" style="-fx-border-color: #06bd18; -fx-border-radius: 20;" text="Add Student" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <Pane layoutX="764.0" layoutY="249.0" prefHeight="175.0" prefWidth="219.0">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="175.0" prefWidth="219.0" spacing="15.0">
+                                       <children>
+                                          <JFXTextField fx:id="textFieldID" promptText="ID" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
+                                          <JFXTextField fx:id="textFieldName" promptText="NAME" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
+                                          <JFXComboBox fx:id="comboAge" prefHeight="31.0" prefWidth="238.0" promptText="AGE" stylesheets="@style.css" unFocusColor="WHITE" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
                            </children>
                         </Pane>
                         <Pane fx:id="classesPane" prefHeight="673.0" prefWidth="1018.0" visible="false">

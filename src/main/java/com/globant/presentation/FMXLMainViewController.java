@@ -1,20 +1,19 @@
 package com.globant.presentation;
 
 import com.globant.data.entities.*;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,7 +21,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,14 +67,21 @@ public class FMXLMainViewController implements Initializable {
     @FXML
     private TableColumn<ClassUniversity, String> colNameClassTeacher;
 
+    @FXML
+    private JFXTextField textFieldID;
+    @FXML
+    private JFXTextField textFieldName;
+    @FXML
+    private JFXComboBox<String> comboAge = new JFXComboBox<>();
+
+    private Utils utils = new Utils();
     private ObservableList<Teacher> listTeachers = FXCollections.observableArrayList();
     private ObservableList<Student> listStudents = FXCollections.observableArrayList();
     private ObservableList<ClassUniversity> listClasses = FXCollections.observableArrayList();
 
     @FXML
     protected void handleCloseButtonAction(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
+        utils.closeWindow(event);
     }
 
     @FXML
@@ -92,7 +97,6 @@ public class FMXLMainViewController implements Initializable {
         studentsPane.setVisible(true);
         classesPane.setVisible(false);
     }
-
 
     @FXML
     protected void handleClassesButtonAction(ActionEvent event) {
@@ -152,20 +156,82 @@ public class FMXLMainViewController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
-        scene.setFill(Color.web("#000000",0.85));
+        scene.setFill(Color.web("#000000", 0.85));
         FMXLDetailClassesViewController fmxlDetailClassesViewController = loader.getController();
         fmxlDetailClassesViewController.setData(theClass);
-        Utils.enableMoveWindow(root, stage);
+        utils.enableMoveWindow(root, stage);
         stage.show();
 
     }
 
+    @FXML
+    protected void addStudent(ActionEvent event) {
+
+        if (checkFields()) {
+            Student newStudent = new Student(
+                    new SimpleStringProperty(textFieldID.getText()),
+                    new SimpleStringProperty(textFieldName.getText()),
+                    new SimpleIntegerProperty(Integer.parseInt(comboAge.getValue())));
+
+            listStudents.add(newStudent);
+            studentsTable.setItems(listStudents);
+
+        }
+
+    }
+
+    private boolean checkFields() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, null, ButtonType.OK);
+
+        if (textFieldID.getText() == null || textFieldID.getText().trim().isEmpty()) {
+            log.warn("ID EMPTY");
+            alert.setContentText("The ID field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (textFieldName.getText() == null || textFieldName.getText().trim().isEmpty()) {
+            log.warn("NAME EMPTY");
+            alert.setContentText("The name field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (comboAge.getValue() == null || comboAge.getValue().trim().isEmpty()) {
+            log.warn("AGE EMPTY");
+            alert.setContentText("The age field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (listStudents.stream().anyMatch(o -> o.getId().getValue().equals(textFieldID.getText()))) {
+            log.warn("ID ALREADY EXISTS");
+            alert.setContentText("Some student already have the ID : " + textFieldID.getText());
+            alert.showAndWait();
+            return false;
+        }
+
+        return true;
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initCombo();
         initializeTeachersData();
         initializeStudentsData();
-        University university = initializeClassesData();
+        initializeClassesData();
         addButtonToTable();
+    }
+
+    private void initCombo() {
+
+        List<String> ageList = new ArrayList<>();
+        for (int i = 1; i <= 90; i++) {
+            ageList.add(Integer.toString(i));
+        }
+        comboAge.setItems(FXCollections.observableArrayList(ageList));
+
     }
 
     private void initializeTeachersData() {
