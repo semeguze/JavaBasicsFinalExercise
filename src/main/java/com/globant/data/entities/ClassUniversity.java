@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+/**
+ * Entity that represents an University Class
+ */
 @Slf4j
 @Getter
 @Setter
@@ -23,14 +26,5 @@ public class ClassUniversity {
         this.classroom = new SimpleStringProperty(classroom);
         this.teacher = teacher;
         this.students = students;
-    }
-
-    public void printDetails() {
-        log.info(" -> Name : {}", getName());
-        log.info("    Classroom : {}", getClassroom());
-        log.info("    Teacher : ");
-        getTeacher().printDetails();
-        log.info("    Students : ");
-        for (Student student : getStudents()) student.printDetails();
     }
 }

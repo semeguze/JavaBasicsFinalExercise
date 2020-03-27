@@ -2,6 +2,9 @@ package com.globant.data.enums;
 
 import lombok.Getter;
 
+/**
+ * Enum with the types of teachers
+ */
 @Getter
 public enum TypeTeacher {
 

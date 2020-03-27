@@ -1,8 +1,8 @@
 package com.globant.presentation;
 
+import com.globant.presentation.commons.*;
 import com.globant.data.entities.ClassUniversity;
 import com.globant.data.entities.Student;
-import com.globant.presentation.commons.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +16,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Details Classes Controller. This view show the classes details
+ */
 @Slf4j
 public class FMXLDetailClassesViewController implements Initializable {
 
@@ -54,13 +57,21 @@ public class FMXLDetailClassesViewController implements Initializable {
     @FXML
     private TableColumn<ClassUniversity, String> colNameClassTeacher;
 
-    private Utils utils = new Utils();
+    private UtilsUniversity utils = new UtilsUniversity();
 
+    /**
+     * This class initialize the FMXLDetailClassesViewController class
+     * @param location default location
+     * @param resources default resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-
+    /**
+     * This class allow to set data to the students table
+     * @param classSelected ClassUniversity to set items
+     */
     @FXML
     public void setData(final ClassUniversity classSelected) {
 
@@ -79,6 +90,11 @@ public class FMXLDetailClassesViewController implements Initializable {
 
     }
 
+    /**
+     * This class allow to set data to the classes table
+     * @param student Student to set items
+     * @param classes List of ClassUniversity to been shown
+     */
     @FXML
     public void setDataClassesStudents(final Student student, final List<ClassUniversity> classes) {
 
@@ -96,7 +112,10 @@ public class FMXLDetailClassesViewController implements Initializable {
 
     }
 
-
+    /**
+     * Manage the invocation to close the window
+     * @param event default action event
+     */
     @FXML
     protected void handleCloseButtonAction(ActionEvent event) {
         utils.closeWindow(event);

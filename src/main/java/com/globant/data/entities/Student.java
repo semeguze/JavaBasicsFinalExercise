@@ -8,6 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Entity that represents a Student
+ */
 @Slf4j
 @Getter
 @Setter
@@ -22,9 +25,5 @@ public class Student {
         this.id = new SimpleStringProperty(id);
         this.name = new SimpleStringProperty(name);
         this.age = new SimpleIntegerProperty(age);
-    }
-
-    public void printDetails() {
-        log.info(" * Id : {}, Name : {}, Age : {}", getId(), getName(), getAge());
     }
 }

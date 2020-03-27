@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Entity that represents an University
+ */
 @Getter
 @Setter
 @AllArgsConstructor

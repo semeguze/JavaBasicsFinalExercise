@@ -6,7 +6,7 @@ import com.globant.data.entities.Teacher;
 import com.globant.data.entities.University;
 import com.globant.logic.MainViewController;
 import com.globant.logic.setup.MyProperties;
-import com.globant.presentation.commons.Utils;
+import com.globant.presentation.commons.UtilsUniversity;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Main View Controller. This view manage all the panes
+ */
 @Slf4j
 public class FMXLMainViewController implements Initializable {
 
@@ -95,31 +98,65 @@ public class FMXLMainViewController implements Initializable {
     @FXML
     private JFXComboBox<String> comboTeacher = new JFXComboBox<>();
     @FXML
+    private JFXComboBox<String> comboClass = new JFXComboBox<>();
+    @FXML
     private CheckComboBox<String> checkComboClasses;
 
     private MainViewController mainViewController = new MainViewController();
-    private Utils utils = new Utils();
+    private UtilsUniversity utils = new UtilsUniversity();
     private ObservableList<Teacher> listTeachers = FXCollections.observableArrayList();
     private ObservableList<Student> listStudents = FXCollections.observableArrayList();
     private ObservableList<ClassUniversity> listClasses = FXCollections.observableArrayList();
     private ObservableList<String> studentsSelectedToCreateClass = FXCollections.observableArrayList();
     private Alert alert = new Alert(Alert.AlertType.CONFIRMATION, null, ButtonType.OK);
 
+    /**
+     * This class initialize the FMXLMainViewController class
+     * @param location default location
+     * @param resources default resources
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        log.info("Initializing Main View");
+        initializeTeachersData();
+        initializeStudentsData();
+        University university = initializeClassesData();
+        addButtonToTableClasses();
+        addButtonToTableStudents();
+        mainViewController.initCombo(comboAge, comboTeacher,comboClass, listTeachers, listClasses);
+        initMultiCheckCombo();
+        log.info("[OK] - Initializing Main View completed. University : {} has been created", university.getName());
+    }
+
+    /**
+     * Manage the invocation to close the window
+     * @param event default action event
+     */
     @FXML
     protected void handleCloseButtonAction(ActionEvent event) {
         utils.closeWindow(event);
     }
 
+    /**
+     * Manage the logic to show the Teachers pane
+     * @param event default action event
+     */
     @FXML
     protected void handleTeachersButtonAction(ActionEvent event) {
+        log.info("Teacher button clicked. Showing Teacher pane");
         teachersTable.setItems(listTeachers);
         teachersPane.setVisible(true);
         studentsPane.setVisible(false);
         classesPane.setVisible(false);
     }
 
+    /**
+     * Manage the logic to show the Students pane
+     * @param event default action event
+     */
     @FXML
     protected void handleStudentsButtonAction(ActionEvent event) {
+        log.info("Student button clicked. Showing Student pane");
         studentsTable.setItems(listStudents);
         clearStudentsFields();
         teachersPane.setVisible(false);
@@ -127,8 +164,13 @@ public class FMXLMainViewController implements Initializable {
         classesPane.setVisible(false);
     }
 
+    /**
+     * Manage the logic to show the Classes pane
+     * @param event default action event
+     */
     @FXML
     protected void handleClassesButtonAction(ActionEvent event) {
+        log.info("Classes button clicked. Showing Classes pane");
         classesTable.setItems(listClasses);
         clearClassesFields();
         teachersPane.setVisible(false);
@@ -136,17 +178,9 @@ public class FMXLMainViewController implements Initializable {
         classesPane.setVisible(true);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initializeTeachersData();
-        initializeStudentsData();
-        initializeClassesData();
-        addButtonToTableClasses();
-        addButtonToTableStudents();
-        mainViewController.initCombo(comboAge, comboTeacher, listTeachers);
-        initMultiCheckCombo();
-    }
-
+    /**
+     * Manage the logic to initialize the Teachers data
+     */
     private void initializeTeachersData() {
         log.info("Creating initial teachers");
         labelFullTime.setText("$" + new MyProperties().getProperties().getProperty("baseSalary.fullTime.value"));
@@ -160,6 +194,9 @@ public class FMXLMainViewController implements Initializable {
         teachersTable.setItems(listTeachers);
     }
 
+    /**
+     * Manage the logic to initialize the Students data
+     */
     private void initializeStudentsData() {
         log.info("Creating initial students");
         colIdStudent.setCellValueFactory(cell -> cell.getValue().getId());
@@ -169,6 +206,9 @@ public class FMXLMainViewController implements Initializable {
         studentsTable.setItems(FXCollections.observableArrayList(listStudents));
     }
 
+    /**
+     * Manage the logic to initialize the Classes data
+     */
     private University initializeClassesData() {
         log.info("Creating initial classes");
         colNameClass.setCellValueFactory(cell -> cell.getValue().getName());
@@ -179,8 +219,11 @@ public class FMXLMainViewController implements Initializable {
         return new University("Test University", listTeachers, listStudents, listClasses);
     }
 
+    /**
+     * Manage the logic to add a custom button to the Classes table
+     */
     private void addButtonToTableClasses() {
-
+        log.info("Adding custom button to classes table");
         TableColumn<ClassUniversity, Void> colBtn = new TableColumn<>("View");
         Callback<TableColumn<ClassUniversity, Void>, TableCell<ClassUniversity, Void>> cellFactory = new Callback<TableColumn<ClassUniversity, Void>, TableCell<ClassUniversity, Void>>() {
             @Override
@@ -217,8 +260,11 @@ public class FMXLMainViewController implements Initializable {
 
     }
 
+    /**
+     * Manage the logic to add a custom button to the Students table
+     */
     private void addButtonToTableStudents() {
-
+        log.info("Adding custom button to students table");
         TableColumn<Student, Void> colBtn = new TableColumn<>("View");
         Callback<TableColumn<Student, Void>, TableCell<Student, Void>> cellFactory = new Callback<TableColumn<Student, Void>, TableCell<Student, Void>>() {
             @Override
@@ -256,6 +302,11 @@ public class FMXLMainViewController implements Initializable {
 
     }
 
+    /**
+     * Manage the call to a new Controller with the Classes related to student
+     * @param student object Student to show related classes
+     * @throws Exception handle the exception
+     */
     @FXML
     public void showMatchClasses(Student student) throws Exception {
 
@@ -273,7 +324,11 @@ public class FMXLMainViewController implements Initializable {
         stage.show();
     }
 
-
+    /**
+     * Manage the call to a new Controller with the data of a class
+     * @param theClass object ClassUniversity with all the data of the class
+     * @throws Exception handle the exception
+     */
     @FXML
     public void showDetailsClasses(ClassUniversity theClass) throws Exception {
 
@@ -292,6 +347,10 @@ public class FMXLMainViewController implements Initializable {
 
     }
 
+    /**
+     * Manage the logic to add a new student
+     * @param event default action event
+     */
     @FXML
     protected void addStudent(ActionEvent event) {
 
@@ -301,12 +360,20 @@ public class FMXLMainViewController implements Initializable {
                     new SimpleStringProperty(textFieldName.getText()),
                     new SimpleIntegerProperty(Integer.parseInt(comboAge.getValue())));
             listStudents.add(newStudent);
+            for (ClassUniversity classUniversity : listClasses){
+                if (comboClass.getValue().equals(classUniversity.getName().getValue())){
+                    classUniversity.getStudents().add(newStudent);
+                }
+            }
             studentsTable.setItems(listStudents);
             clearStudentsFields();
         }
-
     }
 
+    /**
+     * Manage the logic to add a new class
+     * @param event default action event
+     */
     @FXML
     protected void addClass(ActionEvent event) {
 
@@ -338,8 +405,11 @@ public class FMXLMainViewController implements Initializable {
         }
     }
 
+    /**
+     * Allow to validate if the fields are correct for Student creation
+     * @return boolean result if the fields are correct
+     */
     private boolean checkFieldsStudentCreation() {
-
 
         if (textFieldID.getText() == null || textFieldID.getText().trim().isEmpty()) {
             log.warn("ID EMPTY");
@@ -359,6 +429,12 @@ public class FMXLMainViewController implements Initializable {
             alert.showAndWait();
             return false;
         }
+        if (comboClass.getValue() == null || comboClass.getValue().trim().isEmpty()) {
+            log.warn("CLASS EMPTY");
+            alert.setContentText("The class field is empty or invalid");
+            alert.showAndWait();
+            return false;
+        }
         if (listStudents.stream().anyMatch(o -> o.getId().getValue().equals(textFieldID.getText()))) {
             log.warn("ID ALREADY EXISTS");
             alert.setContentText("Some student already have the ID : " + textFieldID.getText());
@@ -368,13 +444,20 @@ public class FMXLMainViewController implements Initializable {
         return true;
     }
 
-
+    /**
+     * Allows to clear Student fields
+     */
     private void clearStudentsFields() {
         textFieldID.setText(null);
         textFieldName.setText(null);
         comboAge.getSelectionModel().clearSelection();
+        comboClass.getSelectionModel().clearSelection();
+        mainViewController.initCombo(comboAge, comboTeacher,comboClass, listTeachers, listClasses);
     }
 
+    /**
+     * Allows to clear Class fields
+     */
     private void clearClassesFields() {
         textFieldNameClass.setText(null);
         textFieldNameClassroom.setText(null);
@@ -383,6 +466,10 @@ public class FMXLMainViewController implements Initializable {
         initMultiCheckCombo();
     }
 
+    /**
+     * Allow to validate if the fields are correct for Class creation
+     * @return boolean result if the fields are correct
+     */
     private boolean checkFieldsClassCreation() {
 
         if (textFieldNameClass.getText() == null || textFieldNameClass.getText().trim().isEmpty()) {
@@ -412,9 +499,10 @@ public class FMXLMainViewController implements Initializable {
         return true;
     }
 
-
+    /**
+     * Manage the logic to initialize the multi check combo
+     */
     private void initMultiCheckCombo() {
-
         checkComboClasses.getItems().clear();
         final ObservableMap<String, String> studentsToBeSelected = FXCollections.observableHashMap();
 
