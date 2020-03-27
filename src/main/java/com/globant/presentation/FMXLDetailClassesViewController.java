@@ -1,15 +1,15 @@
 package com.globant.presentation;
 
-import com.globant.data.entities.*;
+import com.globant.data.entities.ClassUniversity;
+import com.globant.data.entities.Student;
+import com.globant.presentation.commons.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -82,7 +82,7 @@ public class FMXLDetailClassesViewController implements Initializable {
     @FXML
     public void setDataClassesStudents(final Student student, final List<ClassUniversity> classes) {
 
-       log.info("Filling data related to the classes related to : {} ", "-");
+        log.info("Filling classes related to : {} ", student.getName().getValue());
 
         nameStudent.setText(student.getName().getValue());
         idStudent.setText(student.getId().getValue());

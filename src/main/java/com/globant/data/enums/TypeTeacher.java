@@ -1,4 +1,4 @@
-package com.globant.data.entities;
+package com.globant.data.enums;
 
 import lombok.Getter;
 

@@ -13,7 +13,7 @@ import lombok.Setter;
 public abstract class Teacher {
 
     private SimpleStringProperty name;
-    private SimpleDoubleProperty salary;
+    private SimpleDoubleProperty salaryPerMonth;
     private SimpleIntegerProperty experienceYears = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty activeHours = new SimpleIntegerProperty(0);
     private SimpleStringProperty type;

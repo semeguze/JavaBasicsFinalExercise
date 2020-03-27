@@ -31,6 +31,6 @@ public class ClassUniversity {
         log.info("    Teacher : ");
         getTeacher().printDetails();
         log.info("    Students : ");
-        for (Student student:getStudents()) student.printDetails();
+        for (Student student : getStudents()) student.printDetails();
     }
 }

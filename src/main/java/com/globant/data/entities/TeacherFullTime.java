@@ -1,5 +1,6 @@
 package com.globant.data.entities;
 
+import com.globant.logic.setup.MyProperties;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.globant.data.entities.TypeTeacher.FULL_TIME;
+import static com.globant.data.enums.TypeTeacher.FULL_TIME;
 
 @Slf4j
 @Getter
@@ -22,7 +23,7 @@ public class TeacherFullTime extends Teacher {
         this.setExperienceYears(new SimpleIntegerProperty(experienceYears));
         this.setType(new SimpleStringProperty(teacherType));
         this.baseSalary = Double.parseDouble(new MyProperties().getProperties().getProperty("baseSalary.fullTime.value"));
-        this.setSalary(calculateSalary(baseSalary, experienceYears));
+        this.setSalaryPerMonth(calculateSalary(baseSalary, experienceYears));
     }
 
     public SimpleDoubleProperty calculateSalary(double baseSalary, int experienceYears) {
@@ -32,6 +33,6 @@ public class TeacherFullTime extends Teacher {
 
     @Override
     public void printDetails() {
-        log.info(" * Name : {}, Experience years : {}, Salary : {}", getName(), getExperienceYears(), getSalary());
+        log.info(" * Name : {}, Experience years : {}, Salary : {}", getName(), getExperienceYears(), getSalaryPerMonth());
     }
 }
