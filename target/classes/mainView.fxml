@@ -33,9 +33,9 @@
                               </Label>
                               <TableView fx:id="teachersTable" layoutX="58.0" layoutY="118.0" prefHeight="426.0" prefWidth="675.0" stylesheets="@style.css">
                                 <columns>
-                                  <TableColumn fx:id="colNameTeacher" prefWidth="197.0" text="Name" />
-                                  <TableColumn fx:id="colSalaryTeacher" minWidth="0.0" prefWidth="81.0" text="Salary" />
-                                    <TableColumn fx:id="colExpTeacher" prefWidth="108.0" text="Exp / yrs" />
+                                  <TableColumn fx:id="colNameTeacher" prefWidth="142.0" text="Name" />
+                                  <TableColumn fx:id="colSalaryTeacher" minWidth="0.0" prefWidth="146.0" text="Salary / month" />
+                                    <TableColumn fx:id="colExpTeacher" prefWidth="98.0" text="Exp / yrs" />
                                     <TableColumn fx:id="colHrsTeacher" prefWidth="124.0" text="Hrs / Week" />
                                     <TableColumn fx:id="colTypeTeacher" prefWidth="140.0" text="Type" />
                                 </columns>
@@ -88,6 +88,7 @@
                                           <JFXTextField fx:id="textFieldID" promptText="ID" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
                                           <JFXTextField fx:id="textFieldName" promptText="NAME" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
                                           <JFXComboBox fx:id="comboAge" prefHeight="31.0" prefWidth="238.0" promptText="AGE" stylesheets="@style.css" unFocusColor="WHITE" />
+                                          <JFXComboBox fx:id="comboClass" prefHeight="31.0" prefWidth="238.0" promptText="CLASS" stylesheets="@style.css" unFocusColor="WHITE" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -108,23 +109,26 @@
                                     <TableColumn fx:id="colNameClassTeacher" prefWidth="176.0" text="Teacher" />
                                 </columns>
                               </TableView>
-                              <Pane layoutX="762.0" layoutY="120.0" prefHeight="295.0" prefWidth="219.0">
+                              <Pane layoutX="763.0" layoutY="189.0" prefHeight="295.0" prefWidth="219.0">
                                  <children>
-                                    <VBox layoutY="14.0" prefHeight="295.0" prefWidth="219.0" spacing="15.0">
+                                    <VBox layoutY="86.0" prefHeight="295.0" prefWidth="219.0" spacing="15.0">
                                        <children>
                                           <JFXTextField fx:id="textFieldNameClass" promptText="NAME" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
                                           <JFXTextField fx:id="textFieldNameClassroom" promptText="CLASSROOM" style="-fx-text-inner-color: #fff;" unFocusColor="WHITE" />
                                           <JFXComboBox fx:id="comboTeacher" prefHeight="31.0" prefWidth="238.0" promptText="TEACHER" stylesheets="@style.css" unFocusColor="WHITE" />
                                           <CheckComboBox fx:id="checkComboClasses" prefHeight="31.0" prefWidth="255.0" style="-fx-background-color: #000;" stylesheets="@style.css" />
+                                          <JFXButton fx:id="addClassButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" onAction="#addClass" style="-fx-border-color: #06bd18; -fx-border-radius: 20;" text="Add Class" textFill="WHITE">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets left="55.0" />
+                                             </VBox.margin>
+                                          </JFXButton>
                                        </children>
                                     </VBox>
                                  </children>
                               </Pane>
-                              <JFXButton fx:id="addClassButton" layoutX="820.0" layoutY="485.0" onAction="#addClass" style="-fx-border-color: #06bd18; -fx-border-radius: 20;" text="Add Class" textFill="WHITE">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </JFXButton>
                            </children>
                         </Pane>
                      </children>

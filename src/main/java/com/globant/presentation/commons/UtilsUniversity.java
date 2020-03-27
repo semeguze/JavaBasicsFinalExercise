@@ -1,16 +1,24 @@
-package com.globant.data.entities;
+package com.globant.presentation.commons;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class Utils {
+/**
+ * This class perform utilities for all classes
+ */
+public class UtilsUniversity {
 
     private double xOffset = 0;
     private double yOffset = 0;
 
-    public void enableMoveWindow(Parent root, Stage stage){
+    /**
+     * Allows to move the window
+     * @param root default root
+     * @param stage default stage
+     */
+    public void enableMoveWindow(Parent root, Stage stage) {
         root.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
@@ -21,8 +29,11 @@ public class Utils {
         });
     }
 
-
-    public void closeWindow(ActionEvent event){
+    /**
+     * Manage the logic to close the window
+     * @param event default action event
+     */
+    public void closeWindow(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
     }
