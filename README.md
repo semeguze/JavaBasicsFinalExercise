@@ -3,7 +3,7 @@ This repo contains the final exercise for the TAE Academy Java module at Globant
 
 ![](https://media.giphy.com/media/ekpoenVS6mGQal9LcH/giphy.gif)
 
-This project was created using Java 8, JavaFX, Maven, and loombok so be sure to import dependencies!
+This project was created using Java 8, JavaFX, Maven, and lombok so be sure to import dependencies!
 
 ![UI](https://i.imgur.com/a6VwpqS.png)
 ![Pop ups](https://i.imgur.com/vss2HLg.png)
